@@ -15,9 +15,11 @@ body {
     width: 100vw;
     font-family: "Poppins", sans-serif;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    /* flex-direction: row; */
     justify-content: space-around;
     align-items: center;
+    margin: 0;
     /* padding: 1rem; */
 }
 
@@ -46,14 +48,31 @@ body {
     padding: 0.5rem;
     font-weight: bold;
 }
+.square {
+    background: var(--white);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    align-items: center;
+}
 
 .circle {
     /* padding: 2rem; */
-    width: 1.5rem;
+    /* width: 8rem;
+    height: 8rem; */
+    background-image: url('./images/circle.png') ;
+   
 }
 
 .cross {
-    width: 1.5rem;
+    /* width: 8rem;
+    height: 8rem; */
+   background-image: url('./images/cross.png')  ;
+ 
+  
+}
+.cross,.circle{
+    background-size:cover 
+    ;
 }
 
 .game {
@@ -65,14 +84,10 @@ body {
     border-radius: 0.5rem;
     background: var(--bg-brown);
     grid-gap: 0.4rem;
-    padding: 0.5rem;
+    padding: 0.4rem;
 }
 
-.square {
-    background: var(--white);
-    border-radius: 0.4rem;
-    cursor: pointer;
-}
+
 
 .instructions {
     /* background: var(--white); */
@@ -151,3 +166,19 @@ font-style: italic ;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
 }
+@media (max-width: 1100px) {
+    .game {
+      width: 18.75rem !important;
+      height: 18.75rem !important;
+    }
+body{
+    align-content: center;
+}
+.modal-container{    width: 80%;
+    height: 60%;
+    text-align: center;
+}
+
+
+
+  }
