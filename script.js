@@ -24,6 +24,7 @@ let count = 0;
 //html
 const instructionsInfoEl = document.getElementById("instructionsInfo")
 const startBtnEl = document.querySelector(".startBtn")
+const restartBtnEl = document.querySelector(".ResetBtn")
 const modelEl = document.querySelector(".modal")
 const player1El = document.querySelector(".player1")
 const player2El = document.querySelector(".player2")
@@ -36,78 +37,73 @@ const formEl = document.querySelector(".modalform")
 const gridEl = document.querySelectorAll(".square")
 
 const resetGame = () => {
-    console.log("rest");
-   
-    hasGameWon = false
+    gridEl.forEach((el, index) => {
+        el.classList = "square";
+    })
+    if (isCircleNext) {
+        instructionsInfoEl.innerHTML = `${players[0]["name"]}'s turn`;
+    } else {
+        instructionsInfoEl.innerHTML = `${players[1]["name"]}'s turn`;
+    }
     matrix = [2, 2, 2, 2, 2, 2, 2, 2, 2];
     hasGameWon = false;
-    players = [{
-        name: "player1", score: 0
-    },
-    {
-        name: "player1", score: 0
-    }]
-    isCircleNext = true
     count = 0;
 }
 const checkToWin = (el) => {
     scenarios.map((scenario, index) => {
         if (matrix[scenario[0]] != 2) {
             let first = matrix[scenario[0]];
-             if (matrix[scenario[1]] === first && matrix[scenario[2]] === matrix[scenario[1]]) {
+            if (matrix[scenario[1]] === first && matrix[scenario[2]] === matrix[scenario[1]]) {
                 hasGameWon = true;
                 count++;
                 if (isCircleNext) {
                     instructionsInfoEl.innerHTML = `${players[1]["name"]} won`;
-                    players[1]["score"] = count;
+                    players[1]["score"] += count;
                     player2ScoreEl.innerHTML = players[1]["score"]
+                    isCircleNext = false
                 } else {
                     instructionsInfoEl.innerHTML = `${players[0]["name"]} won`;
-                    players[0]["score"] = count;
+                    players[0]["score"] += count;
                     player1ScoreEl.innerHTML = players[0]["score"]
+                    isCircleNext = true
                 }
-                resetGame();
-                return;
+                  }
+            if (!matrix.includes(2) && hasGameWon == false) {
+                instructionsInfoEl.innerHTML = `its tie`;
+
             }
+
         }
     })
 }
+
 const addSquares = () => {
-    if (hasGameWon) return;
-    gridEl.forEach((el, index) => {
+     gridEl.forEach((el, index) => {
         el.addEventListener("click", () => {
-            if (index > 9) {
-                hasGameWon === false;
-                instructionsInfoEl.innerHTML = `its tie`;
-                el.class = "square";
+            if (hasGameWon || matrix[index] !== 2) return;
+            if (isCircleNext) {
+                el.classList.add("cross")
+                instructionsInfoEl.innerHTML = `${players[1]["name"]}'s turn`;
+                matrix[index] = 0;
             } else {
-                if (isCircleNext) {
-                    el.classList.add("cross")
-                    instructionsInfoEl.innerHTML = `${players[1]["name"]}'s turn`;
-                    matrix[index] = 0;
-
-                } else {
-                    el.classList.add("circle")
-                    instructionsInfoEl.innerHTML = `${players[0]["name"]}'s turn`;
-                    matrix[index] = 1;
-
-                }
-                isCircleNext = !isCircleNext;
-                checkToWin(el)
+                el.classList.add("circle")
+                instructionsInfoEl.innerHTML = `${players[0]["name"]}'s turn`;
+                matrix[index] = 1;
             }
-
-
+            isCircleNext = !isCircleNext;
+            checkToWin(el)
         })
-
     })
-
-
 }
 
 const startGame = () => {
     startBtnEl.addEventListener("click", (e) => {
         e.preventDefault()
         modelEl.style.display = "flex";
+         resetGame();
+         players[0].score=0;
+         players[1].score=0;
+         isCircleNext=true
     })
     player1El.addEventListener("change", (e) => {
         e.preventDefault()
@@ -125,17 +121,16 @@ const startGame = () => {
         player1ScoreEl.innerHTML = players[0].score
         player2Nameel.innerHTML = players[1].name
         player2ScoreEl.innerHTML = players[1].score
-        player1El.value=""
-        player2El.value=""
-        startBtnEl.innerHTML = "Restart Gamey"
+        player1El.value = ""
+        player2El.value = ""
+        startBtnEl.innerHTML = "New Gamey"
+        restartBtnEl.style.display="flex"
         instructionsInfoEl.innerHTML = `${players[0]["name"]}'s turn`;
         addSquares();
-
+    })
+    restartBtnEl.addEventListener("click",(e)=>{
+        e.preventDefault();
+        resetGame();
     })
 }
-
-
-
-
-
 startGame();
