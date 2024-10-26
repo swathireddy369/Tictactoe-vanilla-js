@@ -191,6 +191,13 @@ body{
     text-align: center;
 }
 
-
-
-  }
+}
+ 
+.footer_text {
+    
+    font-weight: bold;
+    position: absolute;
+    bottom: 0rem;
+    /* color: #abb78a; */
+    font-size: 13px;
+}
